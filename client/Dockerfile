@@ -4,6 +4,6 @@ COPY /client/package.json ./
 COPY /client/package-lock.json ./
 RUN npm install
 COPY ./client .
-EXPOSE 3000
+EXPOSE 5173
 CMD ["npm","run", "build"]
 CMD ["npm","run", "dev"]
