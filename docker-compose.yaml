@@ -22,7 +22,7 @@ services:
     image: rajashekar1/devops-pipeline:client
     container_name: myapp-react-client
     ports:
-      - "3001:3001"
+      - "3000:3004"
     depends_on:
       - server
     networks:
