@@ -22,7 +22,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Submitting item:", { name, description });
+      console.log("Submitting item :", { name, description });
       const response = await axios.post('http://localhost:5001/api/items', { name, description });
       console.log("Server response:", response.data);
       setName('');
