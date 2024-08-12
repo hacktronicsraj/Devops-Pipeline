@@ -23,7 +23,7 @@ function App() {
     e.preventDefault();
     try {
       console.log("Submitting item :", { name, description });
-      const response = await axios.post('http://localhost:5001/api/items', { name, description });
+      const response = await axios.post('http://172.208.41.184:5001/api/items', { name, description });
       console.log("Server response:", response.data);
       setName('');
       setDescription('');

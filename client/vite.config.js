@@ -7,7 +7,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     proxy: {
-      '/api/items': 'http://localhost:5001',
+      '/api/items': 'http://172.208.41.184:5001',
     }
   }
 })
