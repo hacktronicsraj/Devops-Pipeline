@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    image: rajashekar1/devops-pipeline:server
+    container_name: myapp-node-server
+    ports:
+      - "5001:5001"
+    env_file: ./server/.env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    image: rajashekar1/devops-pipeline:client
+    container_name: myapp-react-client
+    ports:
+      - "3001:3001"
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  data-volume:

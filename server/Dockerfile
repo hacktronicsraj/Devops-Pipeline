@@ -4,5 +4,5 @@ COPY /server/package.json ./
 COPY /server/package-lock.json ./
 RUN npm install
 COPY ./server .
-EXPOSE 3001
+EXPOSE 5001
 CMD ["npm","start"]
