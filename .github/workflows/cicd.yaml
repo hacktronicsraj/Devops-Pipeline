@@ -63,9 +63,10 @@ jobs:
         run: docker rm -f rajashekar1/devops-pipeline:server
       - name: Pull image from dockerhub
         run: docker pull rajashekar1/devops-pipeline:server
+      - name: Remove all the Previous Countainers
+        run: docker rm -f $(docker ps -q)
       - name: Run a new container from a new image
         run: |
-          docker kill $(docker ps -q)
           docker run -d -p 5001:5001 rajashekar1/devops-pipeline:server
 
   Client-Deploy:
