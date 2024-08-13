@@ -1,9 +1,11 @@
 name: CICD Pipeline
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   Client-Build-and-Deploy:
     runs-on: ubuntu-latest
@@ -41,7 +43,6 @@ jobs:
           dockerfile: ./server/Dockerfile
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
         with:
@@ -55,27 +56,25 @@ jobs:
           from: amazonkosam221@gmail.com
 
   Server-Deploy:
-    needs: Server-Build-and-Deploy
+    needs: Server-Build
     runs-on: self-hosted
     steps:
-       - name: Delete old container
-       run: docker rm -f rajashekar1/devops-pipeline:server
-       - name : Pull image from dockerhub
-       run: docker pull rajashekar1/devops-pipeline:server
-       - name: Run a new container from a new image
-       run: |
-        docker run -d -p 5001:5001 rajashekar1/devops-pipeline:server
+      - name: Delete old container
+        run: docker rm -f rajashekar1/devops-pipeline:server
+      - name: Pull image from dockerhub
+        run: docker pull rajashekar1/devops-pipeline:server
+      - name: Run a new container from a new image
+        run: |
+          docker run -d -p 5001:5001 rajashekar1/devops-pipeline:server
 
   Client-Deploy:
-  needs: Server-Deploy
-  runs-on: self-hosted
-  steps:
-    - name: Delete old container
-      run: docker rm -f rajashekar1/devops-pipeline:client
-      name : Pull image from dockerhub
-      run: docker pull rajashekar1/devops-pipeline:client
-      name: Run a new container from a new image
-      run: |
-       docker run -d -p 3001:80 rajashekar1/devops-pipeline:client
-      
-
+    needs: Server-Deploy
+    runs-on: self-hosted
+    steps:
+      - name: Delete old container
+        run: docker rm -f rajashekar1/devops-pipeline:client
+      - name: Pull image from dockerhub
+        run: docker pull rajashekar1/devops-pipeline:client
+      - name: Run a new container from a new image
+        run: |
+          docker run -d -p 3001:80 rajashekar1/devops-pipeline:client
