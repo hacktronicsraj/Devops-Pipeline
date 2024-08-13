@@ -6,7 +6,7 @@ function App() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const API_URL = 'http://localhost:5001';
 
   useEffect(() => {
     fetchItems();
