@@ -60,7 +60,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Delete old container
-        run: docker rm -f rajashekar1/devops-pipeline:server
+        run: docker rm -f rajashekar1/devops-pipeline:server || true
       - name: Pull image from dockerhub
         run: docker pull rajashekar1/devops-pipeline:server
       - name: Remove all the Previous Countainers
@@ -74,9 +74,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Delete old container
-        run: docker rm -f rajashekar1/devops-pipeline:client
+        run: docker rm -f rajashekar1/devops-pipeline:client || true
       - name: Pull image from dockerhub
         run: docker pull rajashekar1/devops-pipeline:client
       - name: Run a new container from a new image
         run: |
-          docker run -d -p 5173:80 rajashekar1/devops-pipeline:client
+          docker run -d -p 5173:8081 rajashekar1/devops-pipeline:client
