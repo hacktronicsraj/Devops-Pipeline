@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Create .env file
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> ./client/.env
       - name: Build and Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
@@ -18,8 +21,10 @@ jobs:
           dockerfile: ./client/Dockerfile
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          build-args: |
+          REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
 
-  Server-Build-and-Deploy:
+  Server-Build:
     runs-on: ubuntu-latest
     needs: Client-Build-and-Deploy
     steps:
@@ -37,6 +42,7 @@ jobs:
           dockerfile: ./server/Dockerfile
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
         with:
@@ -48,3 +54,29 @@ jobs:
           body: ${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
           to: rajshekar9230@gmail.com
           from: amazonkosam221@gmail.com
+
+  Server-Deploy:
+    needs: Server-Build-and-Deploy
+    runs-on: self-hosted
+    steps:
+       - name: Delete old container
+       run: docker rm -f rajashekar1/devops-pipeline:server
+       - name : Pull image from dockerhub
+       run: docker pull rajashekar1/devops-pipeline:server
+       - name: Run a new container from a new image
+       run: |
+        docker run -d -p 5001:5001 rajashekar1/devops-pipeline:server
+
+  Client-Deploy:
+  needs: Server-Deploy
+  runs-on: self-hosted
+  steps:
+    - name: Delete old container
+      run: docker rm -f rajashekar1/devops-pipeline:client
+      name : Pull image from dockerhub
+      run: docker pull rajashekar1/devops-pipeline:client
+      name: Run a new container from a new image
+      run: |
+       docker run -d -p 3001:80 rajashekar1/devops-pipeline:client
+      
+

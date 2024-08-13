@@ -6,13 +6,15 @@ function App() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchItems();
   }, []);
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/items');
+      const res = await axios.get(`${API_URL}/api/items`);
       setItems(res.data);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -22,8 +24,8 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Submitting item :", { name, description });
-      const response = await axios.post('http://172.208.41.184:5001/api/items', { name, description });
+      console.log("Submitting item:", { name, description });
+      const response = await axios.post(`${API_URL}/api/items`, { name, description });
       console.log("Server response:", response.data);
       setName('');
       setDescription('');
