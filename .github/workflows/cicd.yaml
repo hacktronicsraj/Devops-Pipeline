@@ -21,8 +21,7 @@ jobs:
           dockerfile: ./client/Dockerfile
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          build-args: |
-          REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
+          buildArgs: REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
 
   Server-Build:
     runs-on: ubuntu-latest
